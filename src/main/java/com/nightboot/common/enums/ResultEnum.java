@@ -2,9 +2,11 @@ package com.nightboot.common.enums;
 
 public enum ResultEnum {
 
-    SUCCESS(200, "success"),
+    SUCCESS(0, "success"),
     FAIL(-1, "fail"),
-    UNAUTHORIZED(401, "unauthorized");
+    UNAUTHORIZED(401, "unauthorized"),
+    FORBIDDEN(403, "forbidden"),
+    NOT_FOUND(404,"not found");
 
     private Integer code;
     private String msg;

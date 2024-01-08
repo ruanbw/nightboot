@@ -24,7 +24,7 @@ import com.nightboot.common.constant.Constants;
 /**
  * 通用http发送方法
  * 
- * @author ruoyi
+ * @author nightboot
  */
 public class HttpUtils
 {

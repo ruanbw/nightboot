@@ -1,7 +1,7 @@
 package com.nightboot.domain;
 
 import com.alibaba.fastjson2.annotation.JSONField;
-import com.nightboot.domain.po.SysUserPo;
+import com.nightboot.domain.po.UserPo;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
@@ -10,7 +10,7 @@ import java.util.Set;
 /**
  * 登录用户身份权限
  * 
- * @author ruoyi
+ * @author nightboot
  */
 public class LoginUser implements UserDetails
 {
@@ -19,7 +19,7 @@ public class LoginUser implements UserDetails
     /**
      * 用户ID
      */
-    private Long userId;
+    private String userId;
 
     /**
      * 用户唯一标识
@@ -64,31 +64,31 @@ public class LoginUser implements UserDetails
     /**
      * 用户信息
      */
-    private SysUserPo user;
+    private UserPo user;
 
     public LoginUser()
     {
     }
 
-    public LoginUser(SysUserPo user, Set<String> permissions)
+    public LoginUser(UserPo user, Set<String> permissions)
     {
         this.user = user;
         this.permissions = permissions;
     }
 
-    public LoginUser(Long userId, SysUserPo user, Set<String> permissions)
+    public LoginUser(String userId, UserPo user, Set<String> permissions)
     {
         this.userId = userId;
         this.user = user;
         this.permissions = permissions;
     }
 
-    public Long getUserId()
+    public String getUserId()
     {
         return userId;
     }
 
-    public void setUserId(Long userId)
+    public void setUserId(String userId)
     {
         this.userId = userId;
     }
@@ -232,12 +232,12 @@ public class LoginUser implements UserDetails
         this.permissions = permissions;
     }
 
-    public SysUserPo getUser()
+    public UserPo getUser()
     {
         return user;
     }
 
-    public void setUser(SysUserPo user)
+    public void setUser(UserPo user)
     {
         this.user = user;
     }

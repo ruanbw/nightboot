@@ -1,0 +1,3 @@
+### 获取用户信息
+GET http://localhost:3000/sysuser?pageNum=1&pageSize=10
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImRhMmRiNmM3LWQxZDAtNDZmNi1hYWUyLTZhOTkzY2RiMjIxNSJ9.ZkjWoWnos5_aCIkcRAPhwUGOr8Bk24gmEsuWC6eBrxoFQZkL_7XjbFzV_ulTczZBlgZM-av-32l3o3R21jmHfw

@@ -1,17 +1,19 @@
-package com.nightboot.domain.res.sysuser;
+package com.nightboot.domain.res.user;
 
 import lombok.Data;
 
 @Data
-public class SysUserPageVo {
+public class UserPageVo {
 
-    private Long id;
+    private String id;
 
     private String username;
 
     private String nickName;
 
     private Integer status;
+
+    private String deptName;
 
     private String createTime;
 

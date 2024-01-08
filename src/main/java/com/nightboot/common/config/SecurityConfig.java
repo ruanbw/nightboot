@@ -22,10 +22,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.filter.CorsFilter;
 
+import javax.annotation.Resource;
+
 /**
  * spring security配置
  * 
- * @author ruoyi
+ * @author nightboot
  */
 @Configuration
 @EnableWebSecurity
@@ -65,14 +67,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
     /**
      * 允许匿名访问的地址
      */
-    @Autowired
+    @Resource
     private PermitAllUrlProperties permitAllUrl;
 
     /**
      * 解决 无法直接注入 AuthenticationManager
      *
-     * @return
-     * @throws Exception
      */
     @Bean
     @Override

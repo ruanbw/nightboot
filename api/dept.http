@@ -1,0 +1,6 @@
+### 删除部门
+DELETE http://localhost:3100/dept/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjE0NzQ0OTUyLWY1ODEtNGYzYi05YThlLTcxNTA0OTM5MjU1MyJ9.99vY1vnA0JVi-cA_1M6wxi_4aqJYaMCNzMviSpwDrvqk7gzegybGBxLEor2bq0LXA3mWHTPHls3n5zBwb4LN9A
+
+{"id":"1"}

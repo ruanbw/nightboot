@@ -6,14 +6,14 @@ import lombok.Data;
 
 @Data
 @TableName("sys_user")
-public class SysUserPo extends BaseEntity {
+public class UserPo extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * id
      */
-    private Long id;
+    private String id;
 
     /**
      * 用户名
@@ -31,8 +31,28 @@ public class SysUserPo extends BaseEntity {
     private String nickName;
 
     /**
+     * 头像
+     */
+    private String avatar;
+
+    /**
      * 状态 0:正常 1:冻结 2:删除
      */
     private Integer status;
+
+    /**
+     * 备注
+     */
+    private String remark;
+
+    /**
+     * 邮箱
+     */
+    private String email;
+
+    /**
+     * 部门ID
+     */
+    private Long deptId;
 
 }

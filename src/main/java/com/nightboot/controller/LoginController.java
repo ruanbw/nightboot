@@ -5,35 +5,43 @@ import com.nightboot.common.constant.Constants;
 import com.nightboot.common.utils.*;
 import com.nightboot.domain.LoginUser;
 import com.nightboot.domain.Result;
-import com.nightboot.domain.po.SysUserPo;
+import com.nightboot.domain.po.UserPo;
+import com.nightboot.domain.req.user.LoginUserDto;
+import com.nightboot.domain.res.user.UserInfoVo;
 import com.nightboot.service.RedisCache;
+import com.nightboot.service.RoleService;
+import com.nightboot.service.UserService;
 import eu.bitwalker.useragentutils.UserAgent;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
  * 登录验证
  *
- * @author ruoyi
+ * @author nightboot
  */
 @RestController
-public class SysLoginController {
+public class LoginController {
 
     @Resource
     private AuthenticationManager authenticationManager;
+    @Resource
+    private UserService userService;
+    @Resource
+    private RoleService roleService;
     @Resource
     private RedisCache redisCache;
     // 令牌自定义标识
@@ -59,7 +67,7 @@ public class SysLoginController {
     private static final Long MILLIS_MINUTE_TEN = 20 * 60 * 1000L;
 
     @PostMapping("/login")
-    public Result login(@RequestBody SysUserPo user) {
+    public Result<String> login(@RequestBody LoginUserDto user) {
 
         // 用户验证
         Authentication authentication = null;
@@ -82,7 +90,7 @@ public class SysLoginController {
             }
         }
 
-        String token = IdUtils.fastUUID();
+        String token = UUIDUtils.fastUUID();
         loginUser.setToken(token);
         setUserAgent(loginUser);
         refreshToken(loginUser);
@@ -93,7 +101,20 @@ public class SysLoginController {
         String token1 = Jwts.builder()
                 .setClaims(claims)
                 .signWith(SignatureAlgorithm.HS512, secret).compact();
+
         return Result.success(token1);
+    }
+
+    @GetMapping("/getUserInfo")
+    public Result<UserInfoVo> getUserInfo(){
+        String userId = SecurityUtils.getUserId();
+        UserPo userInfo = userService.getUserInfo(userId);
+
+        UserInfoVo vo = new UserInfoVo();
+        BeanUtils.copyProperties(userInfo, vo);
+
+        vo.setRoles(roleService.findRolesByUserId(userId));
+        return Result.success(vo);
     }
 
     /**

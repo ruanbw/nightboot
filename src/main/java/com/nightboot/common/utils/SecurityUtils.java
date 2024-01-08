@@ -12,14 +12,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 /**
  * 安全服务工具类
  * 
- * @author ruoyi
+ * @author nightboot
  */
 public class SecurityUtils
 {
     /**
      * 用户ID
      **/
-    public static Long getUserId()
+    public static String getUserId()
     {
         try
         {

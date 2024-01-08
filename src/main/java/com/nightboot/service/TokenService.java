@@ -23,7 +23,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 /**
  * token验证处理
  *
- * @author ruoyi
+ * @author nightboot
  */
 @Component
 public class TokenService
@@ -109,7 +109,7 @@ public class TokenService
     /**
      * 删除用户身份信息 单终端登陆
      */
-    public void delLoginUser(String token, Long userId)
+    public void delLoginUser(String token, String userId)
     {
         if (StringUtils.isNotEmpty(token))
         {
@@ -131,7 +131,7 @@ public class TokenService
      */
     public String createToken(LoginUser loginUser)
     {
-        String token = IdUtils.fastUUID();
+        String token = UUIDUtils.fastUUID();
         loginUser.setToken(token);
         setUserAgent(loginUser);
         refreshToken(loginUser);
@@ -191,7 +191,7 @@ public class TokenService
         }
     }
 
-    private String getUserIdKey(Long userId)
+    private String getUserIdKey(String userId)
     {
         return Constants.LOGIN_USERID_KEY + userId;
     }

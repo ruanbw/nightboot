@@ -5,7 +5,7 @@ import com.nightboot.common.utils.StringUtils;
 /**
  * 字符串格式化
  * 
- * @author ruoyi
+ * @author nightboot
  */
 public class StrFormatter
 {

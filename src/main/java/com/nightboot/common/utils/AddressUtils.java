@@ -2,7 +2,7 @@ package com.nightboot.common.utils;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-import com.nightboot.common.config.RuoYiConfig;
+import com.nightboot.common.config.NightBootConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.nightboot.common.constant.Constants;
@@ -10,7 +10,7 @@ import com.nightboot.common.constant.Constants;
 /**
  * 获取地址类
  * 
- * @author ruoyi
+ * @author nightboot
  */
 public class AddressUtils
 {
@@ -29,7 +29,7 @@ public class AddressUtils
         {
             return "内网IP";
         }
-        if (RuoYiConfig.isAddressEnabled())
+        if (NightBootConfig.isAddressEnabled())
         {
             try
             {

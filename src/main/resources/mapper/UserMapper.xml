@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nightboot.mapper.UserMapper">
+
+    <select id="findAll" resultType="com.nightboot.domain.res.user.UserPageVo">
+        select a.`id`,a.`username`,a.`nick_name`,a.`status`,b.`dept_name` as deptName,a.`create_by`,a.`create_time`,a.`update_by`,a.`update_time`
+        from `sys_user` a
+        left join `t_dept` b on b.`id` = a.`dept_id`
+        where a.`status` in (0,1)
+        <if test="q.username != null and q.username != ''">
+            and a.`username` like concat('%',#{q.username},'%')
+        </if>
+        <if test="q.nickName != null and q.nickName != ''">
+            and a.`nick_name` like concat('%',#{q.nickName},'%')
+        </if>
+        <if test="q.status != null">
+            and a.`status` = #{q.status}
+        </if>
+        <if test="q.email != null and q.email != ''">
+            and a.`email` like concat('%',#{q.email},'%')
+        </if>
+        <if test="q.deptId != null">
+            and a.`dept_id` = #{q.deptId}
+        </if>
+        order by a.`create_time` desc
+    </select>
+
+</mapper>

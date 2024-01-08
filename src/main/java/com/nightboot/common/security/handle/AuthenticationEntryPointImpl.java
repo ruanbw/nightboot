@@ -18,7 +18,7 @@ import com.alibaba.fastjson2.JSON;
 /**
  * 认证失败处理类 返回未授权
  * 
- * @author ruoyi
+ * @author nightboot
  */
 @Component
 public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint, Serializable

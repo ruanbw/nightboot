@@ -1,12 +1,10 @@
-package com.nightboot.service.service.impl;
+package com.nightboot.service.impl;
 
 import com.nightboot.domain.LoginUser;
-import com.nightboot.domain.po.SysUserPo;
-import com.nightboot.service.SysUserService;
-import org.apache.commons.lang3.StringUtils;
+import com.nightboot.domain.po.UserPo;
+import com.nightboot.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,7 +18,7 @@ import java.util.Set;
 /**
  * 用户验证处理
  *
- * @author ruoyi
+ * @author nightboot
  */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService
@@ -28,12 +26,12 @@ public class UserDetailsServiceImpl implements UserDetailsService
     private static final Logger log = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
 
     @Resource
-    private SysUserService userService;
+    private UserService userService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
     {
-        SysUserPo user = userService.loadUserByUsername(username);
+        UserPo user = userService.loadUserByUsername(username);
         if (Objects.isNull(user))
         {
             log.info("登录用户：{} 不存在.", username);
