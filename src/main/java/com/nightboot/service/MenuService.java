@@ -11,6 +11,8 @@ public interface MenuService {
 
     List<MenuListVo> findAll(MenuPageDto dto);
 
+    List<MenuListVo> getMenuList();
+
     void save(SaveMenuDto dto);
 
     void update(UpdateMenuDto dto);

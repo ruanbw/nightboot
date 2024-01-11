@@ -6,6 +6,7 @@ import com.nightboot.domain.req.role.ChangeRoleStatusDto;
 import com.nightboot.domain.req.role.RolePageDto;
 import com.nightboot.domain.req.role.SaveRoleDto;
 import com.nightboot.domain.req.role.UpdateRoleDto;
+import com.nightboot.domain.res.role.RoleInfoVo;
 import com.nightboot.domain.res.role.RoleListVo;
 
 import java.util.List;
@@ -28,5 +29,7 @@ public interface RoleService {
     void del(String id);
 
     void setRoleStatus(ChangeRoleStatusDto dto);
+
+    RoleInfoVo queryRoleById(String roleId);
 
 }

@@ -6,6 +6,7 @@ import com.nightboot.domain.po.DeptPo;
 import com.nightboot.domain.req.dept.DeptPageDto;
 import com.nightboot.domain.req.dept.SaveDeptDto;
 import com.nightboot.domain.req.dept.UpdateDeptDto;
+import com.nightboot.domain.res.dept.DeptInfoVo;
 import com.nightboot.domain.res.dept.DeptListVo;
 import com.nightboot.service.DeptService;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,10 @@ public class DeptController {
         return Result.success(deptService.findAll(dto));
     }
 
+    @GetMapping("{deptId}")
+    public Result<DeptInfoVo> findOne(@PathVariable("deptId") String deptId){
+        return Result.success(deptService.findOne(deptId));
+    }
     @PostMapping
     public Result<Void> save(@RequestBody SaveDeptDto dto) {
         deptService.save(dto);

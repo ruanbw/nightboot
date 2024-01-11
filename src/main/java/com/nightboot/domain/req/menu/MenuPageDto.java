@@ -6,16 +6,24 @@ import lombok.Data;
 public class MenuPageDto {
 
     private String parentId;
-    private String menuName;
-    private String path;
-    private String component;
-    private String permission;
-    private Integer type;
+    private String title;
     private String icon;
-    private Integer orderNo;
-    private String keepAlive;
-    private String hidden;
+    private String path;
+    private String menuName;
+    private String component;
     private String redirect;
+    private Integer hideChildrenInMenu;
+    private Integer hideMenu;
+    private Integer hideBreadcrumb;
+    private String currentActiveMenu;
     private Integer status;
+    private String remark;
+    private Integer orderNo;
+    private Integer type;
+    private String permission;
+    private Integer keepAlive;
+    private Integer hidden;
+    private Integer isExt;
+    private Integer isShow;
 
 }

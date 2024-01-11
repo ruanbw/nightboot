@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nightboot.mapper.RoleMenuMapper">
+
+    <insert id="batchSave">
+        insert into sys_role_menu(id,role_id,menu_id)
+        values
+        <foreach collection="list" separator="," item="l">
+            (#{l.id},#{l.roleId},#{l.menuId})
+        </foreach>
+    </insert>
+
+    <select id="queryRolePermissions" resultType="com.nightboot.domain.bo.rolemenu.RoleMenuBo">
+        SELECT b.id,b.parent_id,b.type as type,b.menu_name
+        FROM `sys_role_menu` a
+        INNER JOIN `sys_menu` b ON a.menu_id = b.id
+        WHERE a.role_id = #{rolelId}
+        order by b.order_num
+    </select>
+
+</mapper>

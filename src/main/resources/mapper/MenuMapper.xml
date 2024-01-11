@@ -5,11 +5,40 @@
 <mapper namespace="com.nightboot.mapper.MenuMapper">
 
     <select id="findAll" resultType="com.nightboot.domain.res.menu.MenuListVo">
-        select `id`,`parent_id`,`title`,`icon`,`path`,`menu_name`,`component`,`redirect`,`hide_children_in_menu`,
-               `hide_menu`,`hide_breadcrumb`,current_active_menu,`status`,`remark`,`order_no`,`type`,`permission`,
-               `keep_alive`,`hidden`,is_ext,`create_by`,`create_time`,`update_by`,`update_time`
+        select `id`,
+        `parent_id`,
+        `title`,
+        `icon`,
+        `path`,
+        `menu_name`,
+        `component`,
+        `redirect`,
+        `hide_children_in_menu`,
+        `hide_menu`,
+        `hide_breadcrumb`,
+        `current_active_menu`,
+        `status`,
+        `remark`,
+        `order_no`,
+        `type`,
+        `permission`,
+        `keep_alive`,
+        `hidden`,
+        `is_ext`,
+        `is_show`,
+        `create_by`,
+        `create_time`,
+        `update_by`,
+        `update_time`
         from `sys_menu`
-        order by `order_no` desc
+        where `status` in (0,1)
+        <if test="q.menuName != null and q.menuName != ''">
+            and `menu_name` like concat('%',#{q.menuName},'%')
+        </if>
+        <if test="q.status != null">
+            and `status` = #{q.status}
+        </if>
+        order by `order_no`
     </select>
 
 </mapper>

@@ -8,6 +8,7 @@ import com.nightboot.domain.req.role.SaveRoleDto;
 import com.nightboot.domain.req.role.UpdateRoleDto;
 import com.nightboot.domain.req.user.SaveUserDto;
 import com.nightboot.domain.req.user.UpdateUserDto;
+import com.nightboot.domain.res.role.RoleInfoVo;
 import com.nightboot.domain.res.role.RoleListVo;
 import com.nightboot.service.RoleService;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,12 @@ public class RoleController {
     @GetMapping
     public Result<Page<RoleListVo>> findAll(RolePageDto dto) {
         return Result.success(roleService.findAll(dto));
+    }
+
+    @GetMapping("{id}")
+    public Result<RoleInfoVo> findOne(@PathVariable("id") String roleId){
+        RoleInfoVo roleInfoVo = roleService.queryRoleById(roleId);
+        return Result.success(roleInfoVo);
     }
 
     @PostMapping

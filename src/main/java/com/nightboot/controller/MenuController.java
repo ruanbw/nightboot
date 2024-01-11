@@ -23,6 +23,11 @@ public class MenuController {
         return Result.success(menuService.findAll(dto));
     }
 
+    @GetMapping("getMenuList")
+    public Result<List<MenuListVo>> getMenuList(MenuPageDto dto){
+        return Result.success(menuService.findAll(dto));
+    }
+
     @PostMapping
     public Result<Void> save(@RequestBody SaveMenuDto dto){
         menuService.save(dto);

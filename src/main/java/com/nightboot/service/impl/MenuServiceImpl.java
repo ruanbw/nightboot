@@ -5,27 +5,44 @@ import com.nightboot.common.exception.ServiceException;
 import com.nightboot.common.utils.IdUtils;
 import com.nightboot.common.utils.SecurityUtils;
 import com.nightboot.common.utils.StringUtils;
+import com.nightboot.domain.bo.rolemenu.RoleMenuBo;
 import com.nightboot.domain.po.MenuPo;
+import com.nightboot.domain.po.RolePo;
 import com.nightboot.domain.req.menu.MenuPageDto;
 import com.nightboot.domain.req.menu.SaveMenuDto;
 import com.nightboot.domain.req.menu.UpdateMenuDto;
 import com.nightboot.domain.res.dept.DeptListVo;
 import com.nightboot.domain.res.menu.MenuListVo;
+import com.nightboot.domain.res.menu.MetaVo;
 import com.nightboot.mapper.MenuMapper;
 import com.nightboot.service.MenuService;
+import com.nightboot.service.RoleMenuService;
+import com.nightboot.service.RoleService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.annotation.Resource;
+import java.util.*;
 
 @Service
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, MenuPo> implements MenuService {
 
+    @Resource
+    private RoleMenuService roleMenuService;
+    @Resource
+    private RoleService roleService;
+
     @Override
     public List<MenuListVo> findAll(MenuPageDto dto) {
         List<MenuListVo> list = this.baseMapper.findAll(dto);
-        return buildChildren(null,list);
+        return permissionsToTree(list);
+    }
+
+    @Override
+    public List<MenuListVo> getMenuList() {
+        String userId = SecurityUtils.getUserId();
+        // TODO 查询当前用户所有角色下的权限
+        return null;
     }
 
     @Override
@@ -58,21 +75,52 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, MenuPo> implements 
         if(StringUtils.isNotNull(childrenMenu)){
             throw new ServiceException("请先删除子级");
         }
-        menu.setStatus(2);
-        menu.setUpdateBy(SecurityUtils.getUserId());
-        updateById(menu);
+        // 删除菜单
+        this.baseMapper.deleteById(menu);
+        // 删除角色关联权限信息
+        roleMenuService.deletePermission(id);
     }
 
-    private List<MenuListVo> buildChildren(String parentId, List<MenuListVo> allList) {
-        List<MenuListVo> voList = new ArrayList<>();
-        for (MenuListVo item : allList) {
-            //如果相等
-            if (StringUtils.equals(item.getParentId(), parentId)) {
-                //递归，自己调自己
-                item.setChildren(buildChildren(item.getId(), allList));
-                voList.add(item);
+    /**
+     * 根据权限数组组成权限树
+     */
+    private List<MenuListVo> permissionsToTree(List<MenuListVo> permissions){
+        List<MenuListVo> topTree = new ArrayList<>();
+        Map<String,List<MenuListVo>> childMap = new HashMap<>();
+        Map<String,MenuListVo> parentMap = new HashMap<>();
+        for(MenuListVo m : permissions){
+            MetaVo metaVo = new MetaVo();
+            metaVo.setTitle(m.getTitle());
+            metaVo.setIcon(m.getIcon());
+            m.setMeta(metaVo);
+            parentMap.put(m.getId(),m);
+            if(StringUtils.isEmpty(m.getParentId())){
+                topTree.add(m);
+                List<MenuListVo> childs = childMap.get(m.getId());
+                if(Objects.isNull(childs)){
+                    childs = new ArrayList<>();
+                    childMap.put(m.getId(),childs);
+                }
+                m.setChildren(childs);
+            }else{
+                // 维护兄弟节点
+                List<MenuListVo> brothers = childMap.get(m.getParentId());
+                if(Objects.isNull(brothers)){
+                    brothers = new ArrayList<>();
+                    childMap.put(m.getParentId(),brothers);
+                    m.setChildren(brothers);
+                }
+                brothers.add(m);
+
+                // 维护自己的子节点
+                List<MenuListVo> myChilds = childMap.get(m.getId());
+                if(Objects.isNull(myChilds)){
+                    myChilds = new ArrayList<>();
+                    childMap.put(m.getId(),myChilds);
+                }
+                m.setChildren(myChilds);
             }
         }
-        return voList;
+        return topTree;
     }
 }

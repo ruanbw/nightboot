@@ -10,6 +10,7 @@ import com.nightboot.domain.po.DeptPo;
 import com.nightboot.domain.req.dept.DeptPageDto;
 import com.nightboot.domain.req.dept.SaveDeptDto;
 import com.nightboot.domain.req.dept.UpdateDeptDto;
+import com.nightboot.domain.res.dept.DeptInfoVo;
 import com.nightboot.domain.res.dept.DeptListVo;
 import com.nightboot.mapper.DeptMapper;
 import com.nightboot.service.DeptService;
@@ -29,6 +30,17 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, DeptPo> implements 
         List<DeptListVo> regions = this.baseMapper.findAll(dto);
         //指定根节点的parentId
         return buildChildren(null, regions);
+    }
+
+    @Override
+    public DeptInfoVo findOne(String deptId) {
+        DeptPo dept = getById(deptId);
+        if (StringUtils.isNull(dept)) {
+            throw new ServiceException("部门不存在");
+        }
+        DeptInfoVo deptInfoVo = new DeptInfoVo();
+        BeanUtils.copyProperties(dept, deptInfoVo);
+        return deptInfoVo;
     }
 
     @Override
