@@ -20,11 +20,6 @@ public interface RoleMenuService {
     /**
      *  查询角色权限信息
      */
-    List<RoleMenuBo> queryRolePermissions(String rolelId);
-
-    /**
-     *  查询角色权限信息
-     */
     List<String> queryRoleMenuIds(String rolelId);
 
     /**

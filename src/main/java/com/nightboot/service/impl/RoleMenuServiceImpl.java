@@ -40,10 +40,6 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuMapper, RoleMenuPo>
         this.baseMapper.batchSave(list);
     }
 
-    @Override
-    public List<RoleMenuBo> queryRolePermissions(String rolelId) {
-        return this.baseMapper.queryRolePermissions(rolelId);
-    }
 
     @Override
     public List<String> queryRoleMenuIds(String rolelId) {

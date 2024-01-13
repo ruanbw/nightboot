@@ -15,4 +15,6 @@ public interface MenuMapper extends BaseMapper<MenuPo> {
 
     List<MenuListVo> findAll(@Param("q") MenuPageDto dto);
 
+    List<MenuListVo> getMenuList(@Param("q") String dto);
+
 }

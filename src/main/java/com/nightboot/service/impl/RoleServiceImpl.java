@@ -44,34 +44,34 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RolePo> implements 
     @Override
     public void save(SaveRoleDto dto) {
         RolePo role = query().eq("role_value", dto.getRoleValue()).one();
-        if(StringUtils.isNotNull(role)){
+        if (StringUtils.isNotNull(role)) {
             throw new ServiceException("角色已存在");
         }
         RolePo newRole = new RolePo();
-        BeanUtils.copyProperties(dto,newRole);
+        BeanUtils.copyProperties(dto, newRole);
         newRole.setId(IdUtils.nextId());
         newRole.setCreateBy(SecurityUtils.getUserId());
         save(newRole);
-        roleMenuService.saveRolePermissions(newRole.getId(),dto.getMenu());
+        roleMenuService.saveRolePermissions(newRole.getId(), dto.getMenu());
     }
 
     @Override
     public void update(UpdateRoleDto dto) {
         RolePo role = getById(dto.getId());
-        if(StringUtils.isNull(role)){
+        if (StringUtils.isNull(role)) {
             throw new ServiceException("角色不存在");
         }
-        BeanUtils.copyProperties(dto,role);
+        BeanUtils.copyProperties(dto, role);
         String userId = SecurityUtils.getUserId();
         role.setUpdateBy(userId);
         updateById(role);
-        roleMenuService.updateRolePermissions(role.getId(),dto.getMenu(),userId);
+        roleMenuService.updateRolePermissions(role.getId(), dto.getMenu(), userId);
     }
 
     @Override
     public void del(String id) {
         RolePo role = getById(id);
-        if(StringUtils.isNull(role)){
+        if (StringUtils.isNull(role)) {
             throw new ServiceException("角色不存在");
         }
         role.setStatus(2);
@@ -82,7 +82,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RolePo> implements 
     @Override
     public void setRoleStatus(ChangeRoleStatusDto dto) {
         RolePo role = getById(dto.getId());
-        if(StringUtils.isNull(role)){
+        if (StringUtils.isNull(role)) {
             throw new ServiceException("角色不存在");
         }
         role.setStatus(dto.getStatus());
@@ -94,9 +94,9 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RolePo> implements 
     public List<RolePo> findRolesByUserId(String userId) {
         List<UserRolePo> roleIds = userRoleService.findRoleIdsByUserId(userId);
         List<RolePo> roles = new ArrayList<>();
-                roleIds.forEach(item-> {
+        roleIds.forEach(item -> {
             Long roleId = item.getRoleId();
-            RolePo role = query().eq("id", roleId).and(i->i.eq("status", 0)).one();
+            RolePo role = query().eq("id", roleId).and(i -> i.eq("status", 0)).one();
             roles.add(role);
         });
         return roles;
@@ -105,12 +105,12 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RolePo> implements 
     @Override
     public RoleInfoVo queryRoleById(String roleId) {
         RolePo role = getById(roleId);
-        if(Objects.isNull(role)){
+        if (Objects.isNull(role)) {
             // 角色信息不存在
             throw new ServiceException("角色信息不存在");
         }
         RoleInfoVo result = new RoleInfoVo();
-        BeanUtils.copyProperties(role,result);
+        BeanUtils.copyProperties(role, result);
         // 查询角色权限信息
         List<String> menuIds = roleMenuService.queryRoleMenuIds(role.getId());
         result.setMenu(menuIds);

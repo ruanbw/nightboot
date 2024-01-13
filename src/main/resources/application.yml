@@ -23,6 +23,10 @@ token:
   expireTime: 604800
   soloLogin: false
 
+swagger:
+  enabled: true
+  pathMapping: /
+
 # 项目相关配置
 nightboot:
   # 名称

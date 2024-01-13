@@ -14,6 +14,10 @@ import com.nightboot.service.UserService;
 import eu.bitwalker.useragentutils.UserAgent;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.swagger.annotations.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tags;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,6 +37,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author nightboot
  */
+@Api(tags = "登录验证")
 @RestController
 public class LoginController {
 
@@ -66,6 +71,7 @@ public class LoginController {
 
     private static final Long MILLIS_MINUTE_TEN = 20 * 60 * 1000L;
 
+    @Operation(summary = "登录接口")
     @PostMapping("/login")
     public Result<String> login(@RequestBody LoginUserDto user) {
 
@@ -105,6 +111,7 @@ public class LoginController {
         return Result.success(token1);
     }
 
+    @Operation(summary = "获取用户信息")
     @GetMapping("/getUserInfo")
     public Result<UserInfoVo> getUserInfo(){
         String userId = SecurityUtils.getUserId();
