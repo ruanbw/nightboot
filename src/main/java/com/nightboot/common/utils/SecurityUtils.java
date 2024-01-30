@@ -1,9 +1,8 @@
 package com.nightboot.common.utils;
 
 import com.nightboot.common.enums.ResultEnum;
-import com.nightboot.common.exception.ServiceException;
+import com.nightboot.common.exception.CommonException;
 import com.nightboot.domain.LoginUser;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,7 +26,7 @@ public class SecurityUtils
         }
         catch (Exception e)
         {
-            throw new ServiceException("获取用户ID异常", ResultEnum.UNAUTHORIZED.getCode());
+            throw CommonException.fail("获取用户ID异常", ResultEnum.UNAUTHORIZED.getCode());
         }
     }
 
@@ -43,7 +42,7 @@ public class SecurityUtils
         }
         catch (Exception e)
         {
-            throw new ServiceException("获取用户账户异常", ResultEnum.UNAUTHORIZED.getCode());
+            throw CommonException.fail("获取用户账户异常", ResultEnum.UNAUTHORIZED.getCode());
         }
     }
 
@@ -58,7 +57,7 @@ public class SecurityUtils
         }
         catch (Exception e)
         {
-            throw new ServiceException("获取用户信息异常", ResultEnum.UNAUTHORIZED.getCode());
+            throw CommonException.fail("获取用户信息异常", ResultEnum.UNAUTHORIZED.getCode());
         }
     }
 

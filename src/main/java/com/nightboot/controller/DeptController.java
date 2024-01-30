@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
 
-@Validated
 @Api(tags = "部门管理")
 @RestController
 @RequestMapping("/dept")
@@ -41,14 +40,14 @@ public class DeptController {
 
     @Operation(summary = "保存部门")
     @PostMapping
-    public Result<Void> save(@RequestBody SaveDeptDto dto) {
+    public Result<Void> save(@RequestBody @Validated SaveDeptDto dto) {
         deptService.save(dto);
         return Result.success();
     }
 
     @Operation(summary = "更新部门")
     @PutMapping
-    public Result<Void> update(@RequestBody UpdateDeptDto dto) {
+    public Result<Void> update(@RequestBody @Validated UpdateDeptDto dto) {
         deptService.update(dto);
         return Result.success();
     }

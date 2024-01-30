@@ -53,6 +53,6 @@ public class UserPo extends BaseEntity {
     /**
      * 部门ID
      */
-    private Long deptId;
+    private String deptId;
 
 }

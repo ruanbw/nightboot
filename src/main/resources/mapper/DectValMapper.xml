@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nightboot.mapper.DictValMapper">
+
+    <select id="findAll" resultType="com.nightboot.domain.res.dictval.DictValListVo">
+        select `id`,`parent_id`,`dict_id`,`dict_key`,`dict_val`,`remark`,`order_no`
+        from `sys_dict_val`
+        where `dict_id` = #{q.dictId}
+        <if test="q.dictKey != null and q.dictKey != ''">
+            and `dict_key` like concat('%',#{q.dictKey},'%')
+        </if>
+        order by `order_no` desc
+    </select>
+
+</mapper>

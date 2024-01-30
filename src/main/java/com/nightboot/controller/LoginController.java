@@ -2,11 +2,13 @@ package com.nightboot.controller;
 
 import com.nightboot.common.constant.CacheConstants;
 import com.nightboot.common.constant.Constants;
+import com.nightboot.common.exception.CommonException;
 import com.nightboot.common.utils.*;
 import com.nightboot.domain.LoginUser;
 import com.nightboot.domain.Result;
-import com.nightboot.domain.po.UserPo;
+import com.nightboot.domain.po.RolePo;
 import com.nightboot.domain.req.user.LoginUserDto;
+import com.nightboot.domain.res.role.RoleInfoVo;
 import com.nightboot.domain.res.user.UserInfoVo;
 import com.nightboot.service.RedisCache;
 import com.nightboot.service.RoleService;
@@ -14,10 +16,8 @@ import com.nightboot.service.UserService;
 import eu.bitwalker.useragentutils.UserAgent;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.swagger.annotations.Tag;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.annotations.Api;
-import io.swagger.v3.oas.annotations.tags.Tags;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,7 +29,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -115,13 +118,19 @@ public class LoginController {
     @GetMapping("/getUserInfo")
     public Result<UserInfoVo> getUserInfo(){
         String userId = SecurityUtils.getUserId();
-        UserPo userInfo = userService.getUserInfo(userId);
-
-        UserInfoVo vo = new UserInfoVo();
-        BeanUtils.copyProperties(userInfo, vo);
-
-        vo.setRoles(roleService.findRolesByUserId(userId));
-        return Result.success(vo);
+        UserInfoVo userInfo = userService.findOne(userId);
+        if(StringUtils.isNull(userInfo)){
+            throw CommonException.fail("用户不存在");
+        }
+        List<RolePo> roles = roleService.findRolesByUserId(userId);
+        List<RoleInfoVo> roleInfoVos = new ArrayList<>();
+        roles.forEach(role->{
+            RoleInfoVo vo1 = new RoleInfoVo();
+            BeanUtils.copyProperties(role,vo1);
+            roleInfoVos.add(vo1);
+        });
+        userInfo.setRoles(roleInfoVos);
+        return Result.success(userInfo);
     }
 
     /**

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nightboot.mapper.DictMapper">
+
+    <select id="findAll" resultType="com.nightboot.domain.res.dict.DictListVo">
+        select `id`,`dict_name`,`dict_type`,`status`,`remark`
+        from `sys_dict`
+        where status in (0,1)
+        <if test="q.dictName != null and q.dictName != ''">
+            and `dict_name` like concat('%',#{q.dictName},'%')
+        </if>
+    </select>
+
+</mapper>

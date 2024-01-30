@@ -4,6 +4,7 @@ import com.nightboot.domain.Result;
 import com.nightboot.domain.req.menu.MenuPageDto;
 import com.nightboot.domain.req.menu.SaveMenuDto;
 import com.nightboot.domain.req.menu.UpdateMenuDto;
+import com.nightboot.domain.res.menu.MenuInfoVo;
 import com.nightboot.domain.res.menu.MenuListVo;
 import com.nightboot.service.MenuService;
 import io.swagger.annotations.ApiParam;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
 
-@Validated
 @Api(tags = "菜单管理")
 @RestController
 @RequestMapping("/menu")
@@ -38,14 +38,14 @@ public class MenuController {
 
     @Operation(summary = "更新菜单")
     @PutMapping
-    public Result<Void> update(@RequestBody  UpdateMenuDto dto){
+    public Result<Void> update(@RequestBody @Validated UpdateMenuDto dto){
         menuService.update(dto);
         return Result.success();
     }
 
     @Operation(summary = "保存菜单")
     @PostMapping
-    public Result<Void> save(@RequestBody SaveMenuDto dto){
+    public Result<Void> save(@RequestBody @Validated SaveMenuDto dto){
         menuService.save(dto);
         return Result.success();
     }
@@ -55,5 +55,11 @@ public class MenuController {
     public Result<Void> del(@PathVariable("id") @ApiParam(value = "菜单ID") String id){
         menuService.del(id);
         return Result.success();
+    }
+
+    @Operation(summary = "根据ID查询菜单信息")
+    @GetMapping("{id}")
+    public Result<MenuInfoVo> findOne(@PathVariable("id") @ApiParam(value = "菜单ID") String id){
+        return Result.success(menuService.findOne(id));
     }
 }

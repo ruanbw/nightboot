@@ -11,6 +11,9 @@ public class UpdateDeptDto {
     @ApiModelProperty(value = "部门ID")
     private String id;
 
+    @ApiModelProperty(value = "上级部门id")
+    private String parentId;
+
     @ApiModelProperty(value = "部门名称")
     private String deptName;
 

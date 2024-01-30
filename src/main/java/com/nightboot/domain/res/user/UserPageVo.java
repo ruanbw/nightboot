@@ -17,6 +17,12 @@ public class UserPageVo {
     @ApiModelProperty(value = "昵称")
     private String nickName;
 
+    @ApiModelProperty(value = "邮箱")
+    private String email;
+
+    @ApiModelProperty(value = "备注")
+    private String remark;
+
     @ApiModelProperty(value = "状态 0正常 1禁用")
     private Integer status;
 

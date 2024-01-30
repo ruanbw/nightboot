@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nightboot.mapper.GoodsMapper">
+
+    <select id="findAll" resultType="com.nightboot.domain.res.goods.GoodsListVo">
+        select a.id,b.username,a.title,a.price,a.remark,a.status,a.create_time,a.create_by,a.update_by,a.update_time
+        from `t_goods` a
+        inner join `sys_user` b on a.user_id = b.id
+        where a.`status` != 4
+        <if test="q.title != null and q.title != ''">
+            and a.title like concat('%',#{q.title},'%')
+        </if>
+        <if test="q.username != null and q.username != ''">
+            and b.username = #{q.username}
+        </if>
+        <if test="q.status != null">
+            and a.`status` = #{q.status}
+        </if>
+        order by a.`create_time` desc
+    </select>
+
+</mapper>

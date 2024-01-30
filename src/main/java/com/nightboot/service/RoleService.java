@@ -1,6 +1,7 @@
 package com.nightboot.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.nightboot.domain.po.RolePo;
 import com.nightboot.domain.req.role.ChangeRoleStatusDto;
 import com.nightboot.domain.req.role.RolePageDto;
@@ -11,7 +12,7 @@ import com.nightboot.domain.res.role.RoleListVo;
 
 import java.util.List;
 
-public interface RoleService {
+public interface RoleService extends IService<RolePo> {
 
     Page<RoleListVo> findAll(RolePageDto dto);
 
@@ -31,5 +32,9 @@ public interface RoleService {
     void setRoleStatus(ChangeRoleStatusDto dto);
 
     RoleInfoVo queryRoleById(String roleId);
+
+    RolePo findOne(String roleId);
+
+    boolean exist(String roleId);
 
 }

@@ -5,6 +5,7 @@ import com.nightboot.domain.Result;
 import com.nightboot.domain.req.user.SaveUserDto;
 import com.nightboot.domain.req.user.UpdateUserDto;
 import com.nightboot.domain.req.user.UserPageDto;
+import com.nightboot.domain.res.user.UserInfoVo;
 import com.nightboot.domain.res.user.UserPageVo;
 import com.nightboot.service.UserService;
 import io.swagger.annotations.Api;
@@ -19,8 +20,7 @@ import javax.annotation.Resource;
 @Slf4j
 @RestController
 @RequestMapping("/user")
-@Api(tags = "用户管理")
-@Validated
+@Api(tags = "用户相关")
 public class UserController {
 
     @Resource
@@ -33,24 +33,30 @@ public class UserController {
         return Result.success(page);
     }
 
+    @GetMapping("{userId}")
+    @Operation(summary = "根据ID查询用户")
+    public Result<UserInfoVo> findOne(@PathVariable("userId") @ApiParam(value = "用户ID", required = true) String userId) {
+        return Result.success(userService.findOne(userId));
+    }
+
     @PostMapping
-    @Operation(summary = "保存用户")
-    public Result<Void> save(@RequestBody SaveUserDto dto) {
+    @Operation(summary = "保存用户信息")
+    public Result<Void> save(@RequestBody @Validated SaveUserDto dto) {
         userService.save(dto);
         return Result.success();
     }
 
     @PutMapping
-    @Operation(summary = "更新用户")
-    public Result<Void> update(@RequestBody UpdateUserDto dto) {
+    @Operation(summary = "更新用户信息")
+    public Result<Void> update(@RequestBody @Validated UpdateUserDto dto) {
         userService.update(dto);
         return Result.success();
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("{userId}")
     @Operation(summary = "删除用户")
-    public Result<Void> del(@PathVariable("id") @ApiParam(value = "用户ID") String id) {
-        userService.del(id);
+    public Result<Void> del(@PathVariable("userId") @ApiParam(value = "用户ID") String userId) {
+        userService.del(userId);
         return Result.success();
     }
 

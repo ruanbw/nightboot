@@ -10,5 +10,6 @@ public class RoleInfoVo {
     private String id;
     private String roleName;
     private String roleValue;
+    private Integer orderNo;
     private List<String> menu;
 }

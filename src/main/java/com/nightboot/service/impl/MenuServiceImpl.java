@@ -1,18 +1,16 @@
 package com.nightboot.service.impl;
 
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.nightboot.common.exception.ServiceException;
+import com.nightboot.common.exception.CommonException;
 import com.nightboot.common.utils.IdUtils;
 import com.nightboot.common.utils.SecurityUtils;
 import com.nightboot.common.utils.StringUtils;
-import com.nightboot.domain.bo.rolemenu.RoleMenuBo;
 import com.nightboot.domain.po.MenuPo;
 import com.nightboot.domain.po.RolePo;
 import com.nightboot.domain.req.menu.MenuPageDto;
 import com.nightboot.domain.req.menu.SaveMenuDto;
 import com.nightboot.domain.req.menu.UpdateMenuDto;
-import com.nightboot.domain.res.dept.DeptListVo;
+import com.nightboot.domain.res.menu.MenuInfoVo;
 import com.nightboot.domain.res.menu.MenuListVo;
 import com.nightboot.domain.res.menu.MetaVo;
 import com.nightboot.mapper.MenuMapper;
@@ -38,6 +36,17 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, MenuPo> implements 
     public List<MenuListVo> findAll(MenuPageDto dto) {
         List<MenuListVo> list = this.baseMapper.findAll(dto);
         return permissionsToTree(list);
+    }
+
+    @Override
+    public MenuInfoVo findOne(String id) {
+        MenuPo menu = getById(id);
+        if(StringUtils.isNull(menu)){
+            throw CommonException.fail("菜单信息不存在");
+        }
+        MenuInfoVo vo = new MenuInfoVo();
+        BeanUtils.copyProperties(menu,vo);
+        return vo;
     }
 
     @Override
@@ -88,7 +97,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, MenuPo> implements 
     public void update(UpdateMenuDto dto) {
         MenuPo menu = getById(dto.getId());
         if (StringUtils.isNull(menu)) {
-            throw new ServiceException("菜单不存在");
+            throw CommonException.fail("菜单不存在");
         }
         BeanUtils.copyProperties(dto, menu);
         menu.setUpdateBy(SecurityUtils.getUserId());
@@ -99,11 +108,11 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, MenuPo> implements 
     public void del(String id) {
         MenuPo menu = getById(id);
         if (StringUtils.isNull(menu)) {
-            throw new ServiceException("菜单不存在");
+            throw CommonException.fail("菜单不存在");
         }
         MenuPo childrenMenu = query().eq("parent_id", id).one();
         if (StringUtils.isNotNull(childrenMenu)) {
-            throw new ServiceException("请先删除子级");
+            throw CommonException.fail("请先删除子级");
         }
         // 删除菜单
         this.baseMapper.deleteById(menu);
@@ -120,8 +129,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, MenuPo> implements 
         Map<String, MenuListVo> parentMap = new HashMap<>();
         for (MenuListVo m : permissions) {
             MetaVo metaVo = new MetaVo();
-            metaVo.setTitle(m.getTitle());
-            metaVo.setIcon(m.getIcon());
+            BeanUtils.copyProperties(m,metaVo);
             m.setMeta(metaVo);
             parentMap.put(m.getId(), m);
             if (StringUtils.isEmpty(m.getParentId())) {

@@ -8,7 +8,6 @@ import lombok.Data;
 @ApiModel(value = "分页参数")
 public class PageDto {
 
-
     @ApiModelProperty(value = "页码", required = true)
     private Integer pageNum;
 

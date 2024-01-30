@@ -51,8 +51,8 @@ public class GlobalExceptionHandler {
     /**
      * 业务异常
      */
-    @ExceptionHandler(ServiceException.class)
-    public Result<Void> handleServiceException(ServiceException e) {
+    @ExceptionHandler(CommonException.class)
+    public Result<Void> handleServiceException(CommonException e) {
         log.error(e.getMessage(), e);
         Integer code = e.getCode();
         return StringUtils.isNotNull(code) ? Result.fail(code, e.getMessage()) : Result.fail(e.getMessage());

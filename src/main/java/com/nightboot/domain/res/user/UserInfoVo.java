@@ -1,6 +1,7 @@
 package com.nightboot.domain.res.user;
 
 import com.nightboot.domain.po.RolePo;
+import com.nightboot.domain.res.role.RoleInfoVo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -33,5 +34,5 @@ public class UserInfoVo {
     private String remark;
 
     @ApiModelProperty(value = "角色")
-    private List<RolePo> roles;
+    private List<RoleInfoVo> roles;
 }

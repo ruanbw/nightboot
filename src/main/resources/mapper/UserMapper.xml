@@ -5,11 +5,9 @@
 <mapper namespace="com.nightboot.mapper.UserMapper">
 
     <select id="findAll" resultType="com.nightboot.domain.res.user.UserPageVo">
-        select a.`id`,a.`username`,a.`nick_name`,a.`status`,b.`dept_name` as deptName,d.`role_name` as roleName,a.`create_by`,a.`create_time`,a.`update_by`,a.`update_time`
+        select a.`id`,a.`username`,a.`nick_name`,a.`status`,b.`dept_name` as deptName,a.`email`,a.`remark`,a.`create_by`,a.`create_time`,a.`update_by`,a.`update_time`
         from `sys_user` a
-        inner join `t_dept` b on b.`id` = a.`dept_id`
-        inner join `sys_user_role` c on c.`user_id` = a.`id`
-        inner join `sys_role` d on d.`id` = c.`role_id`
+        left join `t_dept` b on b.`id` = a.`dept_id`
         where a.`status` in (0,1)
         <if test="q.username != null and q.username != ''">
             and a.`username` like concat('%',#{q.username},'%')

@@ -1,29 +1,18 @@
 package com.nightboot.domain.req.menu;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
+@ApiModel(value = "分页查询菜单")
 public class MenuPageDto {
 
-    private String parentId;
-    private String title;
-    private String icon;
-    private String path;
+    @ApiModelProperty(value = "菜单名称")
     private String menuName;
-    private String component;
-    private String redirect;
-    private Integer hideChildrenInMenu;
-    private Integer hideMenu;
-    private Integer hideBreadcrumb;
-    private String currentActiveMenu;
+
+    @ApiModelProperty(value = "菜单状态")
     private Integer status;
-    private String remark;
-    private Integer orderNo;
-    private Integer type;
-    private String permission;
-    private Integer keepAlive;
-    private Integer hidden;
-    private Integer isExt;
-    private Integer isShow;
+
 
 }

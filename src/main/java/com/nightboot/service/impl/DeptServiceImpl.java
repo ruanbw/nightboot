@@ -1,8 +1,7 @@
 package com.nightboot.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.nightboot.common.exception.ServiceException;
+import com.nightboot.common.exception.CommonException;
 import com.nightboot.common.utils.IdUtils;
 import com.nightboot.common.utils.SecurityUtils;
 import com.nightboot.common.utils.StringUtils;
@@ -19,8 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class DeptServiceImpl extends ServiceImpl<DeptMapper, DeptPo> implements DeptService {
@@ -36,7 +33,7 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, DeptPo> implements 
     public DeptInfoVo findOne(String deptId) {
         DeptPo dept = getById(deptId);
         if (StringUtils.isNull(dept)) {
-            throw new ServiceException("部门不存在");
+            throw CommonException.fail("部门不存在");
         }
         DeptInfoVo deptInfoVo = new DeptInfoVo();
         BeanUtils.copyProperties(dept, deptInfoVo);
@@ -47,7 +44,7 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, DeptPo> implements 
     public void save(SaveDeptDto dto) {
         DeptPo dept = query().eq("dept_name", dto.getDeptName()).one();
         if (StringUtils.isNotNull(dept)) {
-            throw new ServiceException("部门已存在");
+            throw CommonException.fail("部门已存在");
         }
         DeptPo newDept = new DeptPo();
         BeanUtils.copyProperties(dto, newDept);
@@ -60,7 +57,7 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, DeptPo> implements 
     public void update(UpdateDeptDto dto) {
         DeptPo dept = getById(dto.getId());
         if (StringUtils.isNull(dept)) {
-            throw new ServiceException("部门不存在");
+            throw CommonException.fail("部门不存在");
         }
         BeanUtils.copyProperties(dto, dept);
         dept.setUpdateBy(SecurityUtils.getUserId());
@@ -72,11 +69,11 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, DeptPo> implements 
         DeptPo dept = getById(id);
 
         if (StringUtils.isNull(dept)) {
-            throw new ServiceException("部门不存在");
+            throw CommonException.fail("部门不存在");
         }
         DeptPo childrenDept = query().eq("parent_id", id).one();
         if (StringUtils.isNotNull(childrenDept)) {
-            throw new ServiceException("请先删除下级部门");
+            throw CommonException.fail("请先删除下级部门");
         }
         dept.setStatus(2);
         dept.setUpdateBy(SecurityUtils.getUserId());

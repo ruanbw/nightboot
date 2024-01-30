@@ -1,5 +1,6 @@
 package com.nightboot.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.nightboot.domain.bo.rolemenu.RoleMenuBo;
 import com.nightboot.domain.po.RoleMenuPo;
 import com.nightboot.domain.req.menu.MenuPageDto;
@@ -10,7 +11,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface RoleMenuService {
+public interface RoleMenuService extends IService<RoleMenuPo> {
 
     /**
      * 新增角色权限关联关系
